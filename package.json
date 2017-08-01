@@ -1,0 +1,22 @@
+{
+  "name": "fair-oracle",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wski/fair-oracle.git"
+  },
+  "author": "wski <contact.mattdylan@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/wski/fair-oracle/issues"
+  },
+  "homepage": "https://github.com/wski/fair-oracle#readme",
+  "dependencies": {
+    "crypto-normalize": "2.3.4"
+  }
+}
