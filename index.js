@@ -11,7 +11,8 @@ const {
     apiEnabled,
     redisEnabled,
     web3Provider,
-    testRPC
+    testRPC,
+    floatPercision
 } = require('./configs/general')
 
 // Setup web3
@@ -52,14 +53,15 @@ const dispatch = function(marketData) {
     console.log('update', FairOracle.updateMarket)
 
     FairOracle.updateMarket(
-        solidityReady[0],
-        solidityReady[1],
-        solidityReady[2],
-        solidityReady[3],
+        solidityReady.assets,
+        solidityReady.bids,
+        solidityReady.asks,
+        solidityReady.lasts,
         {
             gas: 3000000
         }, 
         function(err, tx) {
+            if (err) console.log(err)
             console.log('tx', tx)
         }
     )

@@ -17,5 +17,6 @@ module.exports = {
     apiEnabled: true,
     redisEnabled: false,
     web3Provider: 'http://localhost:8545',
-    testRPC: true
+    testRPC: true,
+    floatPercision: 1000000
 }

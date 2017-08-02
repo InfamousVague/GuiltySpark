@@ -1,15 +1,22 @@
 pragma solidity ^0.4.14;
 
 contract FairOracle {
-  address public owner = msg.sender;
+  address public owner;
 
-  struct Asset {
-    uint64 bid;
-    uint64 ask;
-    uint64 last;
+  function FairOracle() {
+    owner = msg.sender;
   }
 
-  mapping (bytes32 => Asset) ticker;
+  uint constant floatPrecision = 1000000;
+
+  struct Asset {
+    uint bid;
+    uint ask;
+    uint last;
+    uint64 time;
+  }
+
+  mapping (bytes8 => Asset) ticker;
 
   event NewMarketInfo();
 
@@ -18,12 +25,13 @@ contract FairOracle {
     _;
   }
 
-  function updateMarket(bytes32[] assets, uint64[] bids, uint64[] asks, uint64[] lasts) onlyOwner {
+  function updateMarket(bytes8[] assets, uint[] bids, uint[] asks, uint[] lasts) onlyOwner {
     for (uint i = 0; i < assets.length; i++) {
       ticker[assets[i]] = Asset({
         bid: bids[i],
         ask: asks[i],
-        last: lasts[i]
+        last: lasts[i],
+        time: uint64(now)
       });
     }
 

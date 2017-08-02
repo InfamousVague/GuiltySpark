@@ -1,3 +1,5 @@
+const { floatPercision } = require('../configs/general')
+
 module.exports = function(marketData) {
     const assets    = []
     const bids      = []
@@ -6,9 +8,21 @@ module.exports = function(marketData) {
 
     Object.keys(marketData).map(coin => {
         assets.push(coin)
-        bids.push(marketData[coin].bid)
-        asks.push(marketData[coin].ask)
-        lasts.push(marketData[coin].last)
+        bids.push(
+          Math.floor(
+            marketData[coin].bid * floatPercision
+          )
+        )
+        asks.push(
+          Math.floor(
+            marketData[coin].ask * floatPercision
+          )
+        )
+        lasts.push(
+          Math.floor(
+            marketData[coin].last * floatPercision
+          )
+        )  
     })
 
     return {
