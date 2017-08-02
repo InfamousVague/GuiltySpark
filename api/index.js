@@ -3,13 +3,7 @@ const Koa       = require('koa')
 const app       = new Koa()
 const send      = require('koa-send')
 const chalk     = require('chalk')
-const redis     = require('redis')
-const bluebird  = require('bluebird')
-const client    = redis.createClient()
 const WebSocket = require('ws')
-
-bluebird.promisifyAll(redis.RedisClient.prototype)
-bluebird.promisifyAll(redis.Multi.prototype)
 
 const { 
     exchanges,
