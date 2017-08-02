@@ -97,10 +97,23 @@
         }
       },
       "links": {},
-      "address": "0x20da82302f926501eda1aab28897c59540c61429",
-      "updated_at": 1501649986739
+      "address": "0x8522495262baf724458c3ac532e71e84c9f315f1",
+      "updated_at": 1501650514915
+    },
+    "1501650666646": {
+      "events": {
+        "0x434b4aa0af87854b192bbf240ad17bddbcd61fe99ae4c4a9cddf55fb4923de5f": {
+          "anonymous": false,
+          "inputs": [],
+          "name": "NewMarketInfo",
+          "type": "event"
+        }
+      },
+      "links": {},
+      "address": "0x34aab2e2b6f6f1981d9591b8d5ccd58e2a017476",
+      "updated_at": 1501650681090
     }
   },
   "schema_version": "0.0.5",
-  "updated_at": 1501649986739
+  "updated_at": 1501650681090
 }

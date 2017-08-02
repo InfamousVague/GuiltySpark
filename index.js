@@ -28,6 +28,9 @@ const FairOracle = contract(
     require('./build/contracts/FairOracle.json')
 )
 FairOracle.setProvider(provider)
+FairOracle.defaults({
+    from: web3.eth.coinbase
+})
 
 global.publish = () => { /* noop */ }
 
@@ -55,7 +58,11 @@ const dispatch = function(marketData) {
             solidityReady.assets,
             solidityReady.bids,
             solidityReady.asks,
-            solidityReady.lasts
+            solidityReady.lasts,
+            {
+                from: web3.eth.accounts[0], 
+                gas: 2000000
+            }
         ).then(result => {
             console.log('result', result)
         }).catch(err => {
