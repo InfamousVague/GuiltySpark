@@ -11,18 +11,17 @@ const {
     supportedCurrencies,
     apiEnabled,
     redisEnabled,
-    web3Provider,
-    testRPC,
-    floatPercision
+    floatPercision,
+    web3Settings
 } = require('./configs/general')
 
 // Setup web3
 const web3 = new Web3()
-const provider = new web3.providers.HttpProvider(web3Provider)
+const provider = new web3.providers.HttpProvider(web3Settings.provider)
 web3.setProvider(
     provider
 )
-console.log(chalk.green(`Connected to web3 with provider: ${web3Provider}`))
+console.log(chalk.green(`Connected to web3 with provider: ${web3Settings.provider}`))
 
 const FairOracle = contract(
     require('./build/contracts/FairOracle.json')
@@ -60,8 +59,8 @@ const dispatch = function(marketData) {
             solidityReady.asks,
             solidityReady.lasts,
             {
-                from: web3.eth.accounts[0], 
-                gas: 2000000
+                from: web3.eth.coinbase, 
+                gas: web3Settings.gasLimit
             }
         ).then(result => {
             console.log('result', result)

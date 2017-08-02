@@ -16,7 +16,10 @@ module.exports = {
     base: 'USD',
     apiEnabled: true,
     redisEnabled: false,
-    web3Provider: 'http://localhost:8545',
-    testRPC: true,
+    web3Settings: {
+        provider: 'http://localhost:8545',
+        testRPC: true,
+        gasLimit: 2000000
+    },
     floatPercision: 1000000
 }
