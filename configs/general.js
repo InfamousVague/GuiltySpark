@@ -15,5 +15,6 @@ module.exports = {
     feedInterval: 15000,
     base: 'USD',
     apiEnabled: true,
-    redisEnabled: false
+    redisEnabled: false,
+    web3Provider: 'http://localhost:8545'
 }

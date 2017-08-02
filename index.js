@@ -1,8 +1,8 @@
 const normalize = require('crypto-normalize')
-const _         = require('lodash')
-const stats     = require('stats-analysis')
 const redis     = require('redis')
 const client    = redis.createClient()
+const Web3      = require('web3')
+const chalk     = require('chalk')
 
 const { 
     exchanges,
@@ -10,14 +10,20 @@ const {
     base,
     supportedCurrencies,
     apiEnabled,
-    redisEnabled
+    redisEnabled,
+    web3Provider
 } = require('./configs/general')
+
+// Setup web3
+const web3 = new Web3()
+web3.setProvider(
+    new web3.providers.HttpProvider(web3Provider)
+)
+console.log(chalk.green(`Connected to web3 with provider: ${web3Provider}`))
 
 global.publish = () => { /* noop */ }
 
 if (apiEnabled) require('./api')
-
-const logger = require('./tools/logger')
 
 const dispatch = function(marketData) {
     logger(marketData)
@@ -28,56 +34,22 @@ const dispatch = function(marketData) {
         JSON.stringify(marketData),
         redis.print
     )
+    
+    const solidityReady = prepForSolidity(marketData)
+    console.log(solidityReady)
 }
+
+// Pretty log data to console 
+const logger = require('./tools/logger')
 
 // Removes extreme outliers
-const removeOutliersGetMean = function(coins) {
-    const cleansedOfOutliers = {}
-    
-    Object.keys(coins).map(coin => {
-        cleansedOfOutliers[coin] = {
-            bid: _.mean(
-                stats.filterOutliers(coins[coin].bid)
-            ),
-            ask: _.mean(
-                stats.filterOutliers(coins[coin].ask)
-            ),
-            last: _.mean(
-                stats.filterOutliers(coins[coin].last)
-            )
-        }
-    })
-    
-    dispatch(cleansedOfOutliers)
-    return cleansedOfOutliers
-}
+const removeOutliersGetMean = require('./tools/removeOutliersGetMean')
 
 // Join all exchanges into array values 
-const format = function(markets) {
-    const coins = {}
+const format = require('./tools/format')
 
-    markets.map((coin, i) => {
-        coins[Object.keys(coin)[0]] = {
-            bid: Object.keys(
-                coin[Object.keys(coin)[0]]
-            ).map(exchange => parseFloat(
-                coin[Object.keys(coin)[0]][exchange].bid)
-            ),
-            ask: Object.keys(
-                coin[Object.keys(coin)[0]]
-            ).map(exchange => parseFloat(
-                coin[Object.keys(coin)[0]][exchange].ask)
-            ),
-            last: Object.keys(
-                coin[Object.keys(coin)[0]]
-            ).map(exchange => parseFloat(
-                coin[Object.keys(coin)[0]][exchange].last)
-            )
-        }
-    })
-
-    return coins
-}
+// This prepares all the data into the format the solidity contract expects
+const prepForSolidity = require('./tools/prepareForSolidity')
 
 // Primary function which kicks off feeding the chain new price data
 const feed = function() {
@@ -114,6 +86,8 @@ const feed = function() {
         const chainData = removeOutliersGetMean(
             format(markets)
         )
+
+        dispatch(chainData)
         // TODO: push chaindata to chain
     })
 }
