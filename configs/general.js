@@ -16,5 +16,6 @@ module.exports = {
     base: 'USD',
     apiEnabled: true,
     redisEnabled: false,
-    web3Provider: 'http://localhost:8545'
+    web3Provider: 'http://localhost:8545',
+    testRPC: true
 }

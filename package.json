@@ -5,6 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
+    "deploy": "node ./tools/deploy.js",
+    "full": "npm run deploy && npm start",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -26,8 +28,9 @@
     "koa-send": "^4.1.0",
     "lodash": "^4.17.4",
     "redis": "^2.7.1",
+    "solc": "^0.4.14",
     "stats-analysis": "^2.0.0",
-    "web3": "^1.0.0-beta.13",
+    "web3": "0.20.0",
     "ws": "^3.1.0"
   }
 }

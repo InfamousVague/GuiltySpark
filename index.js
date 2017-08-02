@@ -11,7 +11,8 @@ const {
     supportedCurrencies,
     apiEnabled,
     redisEnabled,
-    web3Provider
+    web3Provider,
+    testRPC
 } = require('./configs/general')
 
 // Setup web3
@@ -19,7 +20,15 @@ const web3 = new Web3()
 web3.setProvider(
     new web3.providers.HttpProvider(web3Provider)
 )
+web3.eth.defaultAccount = web3.eth.coinbase
 console.log(chalk.green(`Connected to web3 with provider: ${web3Provider}`))
+
+// Automatic contract address detection for testrpc
+const contractAddress = (testRPC) ? require('./configs/contract').address : null
+
+const getABI = require('./tools/getabi')
+const FairOracleContract = web3.eth.contract(getABI())
+const FairOracle = FairOracleContract.at(contractAddress)
 
 global.publish = () => { /* noop */ }
 
@@ -37,6 +46,20 @@ const dispatch = function(marketData) {
     
     const solidityReady = prepForSolidity(marketData)
     console.log(solidityReady)
+    console.log('update', FairOracle.updateMarket)
+
+    FairOracle.updateMarket(
+        solidityReady[0],
+        solidityReady[1],
+        solidityReady[2],
+        solidityReady[3],
+        {
+            gas: 3000000
+        }, 
+        function(err, tx) {
+            console.log('tx', tx)
+        }
+    )
 }
 
 // Pretty log data to console 
