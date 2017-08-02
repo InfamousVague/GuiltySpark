@@ -18,15 +18,16 @@ const {
 
 // Setup web3
 const web3 = new Web3()
+const provider = new web3.providers.HttpProvider(web3Provider)
 web3.setProvider(
-    new web3.providers.HttpProvider(web3Provider)
+    provider
 )
-web3.eth.defaultAccount = web3.eth.coinbase
 console.log(chalk.green(`Connected to web3 with provider: ${web3Provider}`))
 
 const FairOracle = contract(
     require('./build/contracts/FairOracle.json')
 )
+FairOracle.setProvider(provider)
 
 global.publish = () => { /* noop */ }
 
@@ -54,15 +55,12 @@ const dispatch = function(marketData) {
             solidityReady.assets,
             solidityReady.bids,
             solidityReady.asks,
-            solidityReady.lasts,
-            {
-                gas: 3000000
-            }, 
-            function(err, tx) {
-                if (err) console.log(err)
-                console.log('tx', tx)
-            }
-        )
+            solidityReady.lasts
+        ).then(result => {
+            console.log('result', result)
+        }).catch(err => {
+            console.error('err updating market', err)
+        })
     })
 }
 
