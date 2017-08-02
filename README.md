@@ -8,13 +8,13 @@
 ## Endpoints
 There are a few endpoints you can use to fetch data without talking to the chain
 
-### /v1/datapoints
+### `/v1/datapoints`
 lists supported datapoints that feed the oracle
 
-### /v1/coins
+### `/v1/coins`
 lists all the coins supported by the oracle
 
-## /v1/market
+## `/v1/market`
 lists last market data from the oracle
 
 ## Websockets
