@@ -11,7 +11,6 @@ module.exports = function(marketData) {
         lasts.push(marketData[coin].last)
     })
 
-    
     return {
         assets,
         bids,

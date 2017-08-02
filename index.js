@@ -1,6 +1,5 @@
 const normalize = require('crypto-normalize')
 const redis     = require('redis')
-const client    = redis.createClient()
 const Web3      = require('web3')
 const chalk     = require('chalk')
 
@@ -38,11 +37,15 @@ const dispatch = function(marketData) {
     logger(marketData)
 
     if (apiEnabled) publish(marketData)
-    if (redisEnabled) client.set(
-        'market',
-        JSON.stringify(marketData),
-        redis.print
-    )
+    if (redisEnabled) {
+        const client    = redis.createClient()
+
+        client.set(
+            'market',
+            JSON.stringify(marketData),
+            redis.print
+        )
+    }
     
     const solidityReady = prepForSolidity(marketData)
     console.log(solidityReady)
