@@ -1,15 +1,19 @@
 module.exports = {
     exchanges: [
         'kraken.com',
-        'bitfinex.com',
+        'poloniex.com',
         'bittrex.com'
     ],
     supportedCurrencies: [
         'ETH',
         'ETC',
         'LTC',
-        'XMR'
+        'XMR',
+        'BTC',
+        'ZEC'
     ],
-    feedInterval: 5000,
-    base: 'BTC'
+    feedInterval: 15000,
+    base: 'USD',
+    apiEnabled: true,
+    redisEnabled: false
 }
