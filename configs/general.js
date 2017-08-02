@@ -12,7 +12,7 @@ module.exports = {
         'BTC',
         'ZEC'
     ],
-    feedInterval: 15000,
+    feedInterval: 15000, // How often to update prices (not chain prices), websockets, etc.
     base: 'USD',
     apiEnabled: true,
     redisEnabled: false,
@@ -21,5 +21,6 @@ module.exports = {
         testRPC: true,
         gasLimit: 2000000
     },
-    floatPercision: 1000000
+    floatPercision: 1000000, // Solidity hates floats, this should be noted for anyone using the oracle
+    chainPushInterval: 300000 // How often should we push price data to the chain
 }

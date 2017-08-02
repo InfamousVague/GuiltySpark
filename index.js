@@ -12,7 +12,8 @@ const {
     apiEnabled,
     redisEnabled,
     floatPercision,
-    web3Settings
+    web3Settings,
+    chainPushInterval
 } = require('./configs/general')
 
 // Setup web3
@@ -21,8 +22,11 @@ const provider = new web3.providers.HttpProvider(web3Settings.provider)
 web3.setProvider(
     provider
 )
-console.log(chalk.green(`Connected to web3 with provider: ${web3Settings.provider}`))
+console.log(
+    chalk.green(`Connected to web3 with provider: ${web3Settings.provider}`)
+)
 
+// Connect to the FairOracle contract
 const FairOracle = contract(
     require('./build/contracts/FairOracle.json')
 )
@@ -35,12 +39,13 @@ global.publish = () => { /* noop */ }
 
 if (apiEnabled) require('./api')
 
+let lastChainPush = 0
 const dispatch = function(marketData) {
     logger(marketData)
 
     if (apiEnabled) publish(marketData)
     if (redisEnabled) {
-        const client    = redis.createClient()
+        const client = redis.createClient()
 
         client.set(
             'market',
@@ -49,26 +54,29 @@ const dispatch = function(marketData) {
         )
     }
     
+    // Get data in arrays ready for piping to chain
     const solidityReady = prepForSolidity(marketData)
-
-    FairOracle.deployed().then(function(instance) {
-        instance.updateMarket(
-            solidityReady.assets,
-            solidityReady.bids,
-            solidityReady.asks,
-            solidityReady.lasts,
-            {
-                from: web3.eth.coinbase, 
-                gas: web3Settings.gasLimit
-            }
-        ).then(result => {
-            console.log(
-                chalk.cyan('\nUpdated on chain oracle contract.\n')
-            )
-        }).catch(err => {
-            console.error('Error updating market', err)
+    if (Date.now() - lastChainPush > chainPushInterval) {
+        lastChainPush = Date.now()
+        FairOracle.deployed().then(function(instance) {
+            instance.updateMarket(
+                solidityReady.assets,
+                solidityReady.bids,
+                solidityReady.asks,
+                solidityReady.lasts,
+                {
+                    from: web3.eth.coinbase, 
+                    gas: web3Settings.gasLimit
+                }
+            ).then(result => {
+                console.log(
+                    chalk.cyan('\nUpdated on chain oracle contract.\n')
+                )
+            }).catch(err => {
+                console.error('Error updating market', err)
+            })
         })
-    })
+    }
 }
 
 // Pretty log data to console 
@@ -86,34 +94,7 @@ const prepForSolidity = require('./tools/prepareForSolidity')
 // Primary function which kicks off feeding the chain new price data
 const feed = function() {
     // Ready promises for fetching market data on all currencies
-    const coins = supportedCurrencies.map(currency => {
-        return new Promise((resolve, reject) => {
-            // Get ticker valeus for currency on all supported exchanges
-            const tickers = Promise.all(
-                exchanges.map(exchange => normalize.ticker(
-                    currency, 
-                    base, 
-                    exchange
-                ))
-            ).catch(err => {
-                console.error(`Error getting ticker value for ${currency}`, err)
-            })
-
-            // Assign the market data to the appropriot exchange
-            tickers.then(values => {
-                const markets = {}
-
-                values.map((value, i) => {
-                    markets[exchanges[i]] = value
-                })
-
-                // Resolve a list of market values for givin currency
-                resolve({
-                    [currency]: markets
-                })
-            })
-        })
-    })
+    const coins = require('./tools/buildSupportedCoins')
 
     // Finally, get all markets for all coins
     const marketData = Promise.all(coins).then(markets => {

@@ -3,7 +3,7 @@ const { base } = require('../configs/general')
 
 module.exports = function(marketData) {
   Object.keys(marketData).map(coin => {
-    console.log(`${chalk.green(coin)} - ${Math.floor(marketData[coin].last)} ${base} \n${chalk.green('----------------------')}`)
+    console.log(`${chalk.green(coin)} - ${marketData[coin].last.toFixed(2)} ${base} \n${chalk.green('----------------------')}`)
 
     console.log(
       chalk.blue(`Bid: ${marketData[coin].bid}`)
