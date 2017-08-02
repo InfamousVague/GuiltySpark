@@ -1,0 +1,93 @@
+{
+  "contract_name": "FairOracle",
+  "abi": [
+    {
+      "constant": false,
+      "inputs": [],
+      "name": "close",
+      "outputs": [],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "owner",
+      "outputs": [
+        {
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "assets",
+          "type": "bytes8[]"
+        },
+        {
+          "name": "bids",
+          "type": "uint256[]"
+        },
+        {
+          "name": "asks",
+          "type": "uint256[]"
+        },
+        {
+          "name": "lasts",
+          "type": "uint256[]"
+        }
+      ],
+      "name": "updateMarket",
+      "outputs": [],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "payable": false,
+      "type": "constructor"
+    },
+    {
+      "anonymous": false,
+      "inputs": [],
+      "name": "NewMarketInfo",
+      "type": "event"
+    }
+  ],
+  "unlinked_binary": "0x6060604052341561000f57600080fd5b5b60008054600160a060020a03191633600160a060020a03161790555b5b6103aa8061003c6000396000f300606060405263ffffffff7c010000000000000000000000000000000000000000000000000000000060003504166343d726d681146100535780638da5cb5b14610068578063983b969c146100a4575b600080fd5b341561005e57600080fd5b6100666101b5565b005b341561007357600080fd5b61007b6101fb565b60405173ffffffffffffffffffffffffffffffffffffffff909116815260200160405180910390f35b34156100af57600080fd5b610066600460248135818101908301358060208181020160405190810160405280939291908181526020018383602002808284378201915050505050509190803590602001908201803590602001908080602002602001604051908101604052809392919081815260200183836020028082843782019150505050505091908035906020019082018035906020019080806020026020016040519081016040528093929190818152602001838360200280828437820191505050505050919080359060200190820180359060200190808060200260200160405190810160405280939291908181526020018383602002808284375094965061021795505050505050565b005b6000543373ffffffffffffffffffffffffffffffffffffffff9081169116146101dd57600080fd5b60005473ffffffffffffffffffffffffffffffffffffffff16ff5b5b565b60005473ffffffffffffffffffffffffffffffffffffffff1681565b600080543373ffffffffffffffffffffffffffffffffffffffff90811691161461024057600080fd5b5060005b84518110156103495760806040519081016040528085838151811061026557fe5b90602001906020020151815260200184838151811061028057fe5b90602001906020020151815260200183838151811061029b57fe5b9060200190602002015181526020014267ffffffffffffffff16815250600160008784815181106102c857fe5b9060200190602002015177ffffffffffffffffffffffffffffffffffffffffffffffff1916815260208101919091526040016000208151815560208201518160010155604082015181600201556060820151600391909101805467ffffffffffffffff191667ffffffffffffffff909216919091179055505b600101610244565b7f434b4aa0af87854b192bbf240ad17bddbcd61fe99ae4c4a9cddf55fb4923de5f60405160405180910390a15b5b50505050505600a165627a7a72305820a6054cb388806a3eb281360dbdd61919630254507414c674f6f1756320f638360029",
+  "networks": {
+    "1501648543366": {
+      "events": {
+        "0x434b4aa0af87854b192bbf240ad17bddbcd61fe99ae4c4a9cddf55fb4923de5f": {
+          "anonymous": false,
+          "inputs": [],
+          "name": "NewMarketInfo",
+          "type": "event"
+        }
+      },
+      "links": {},
+      "address": "0x9467c8739930e8639513c82b0049f879aef756e6",
+      "updated_at": 1501648593221
+    },
+    "1501648808026": {
+      "events": {
+        "0x434b4aa0af87854b192bbf240ad17bddbcd61fe99ae4c4a9cddf55fb4923de5f": {
+          "anonymous": false,
+          "inputs": [],
+          "name": "NewMarketInfo",
+          "type": "event"
+        }
+      },
+      "links": {},
+      "address": "0xfbb8134a313e9fd1c340d414e20b874d7c94e20c",
+      "updated_at": 1501648814197
+    }
+  },
+  "schema_version": "0.0.5",
+  "updated_at": 1501648814197
+}

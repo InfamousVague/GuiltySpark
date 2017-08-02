@@ -2,6 +2,7 @@ const normalize = require('crypto-normalize')
 const redis     = require('redis')
 const Web3      = require('web3')
 const chalk     = require('chalk')
+const contract  = require('truffle-contract')
 
 const { 
     exchanges,
@@ -23,12 +24,9 @@ web3.setProvider(
 web3.eth.defaultAccount = web3.eth.coinbase
 console.log(chalk.green(`Connected to web3 with provider: ${web3Provider}`))
 
-// Automatic contract address detection for testrpc
-const contractAddress = (testRPC) ? require('./configs/contract').address : null
-
-const getABI = require('./tools/getabi')
-const FairOracleContract = web3.eth.contract(getABI())
-const FairOracle = FairOracleContract.at(contractAddress)
+const FairOracle = contract(
+    require('./build/contracts/FairOracle.json')
+)
 
 global.publish = () => { /* noop */ }
 
@@ -50,21 +48,22 @@ const dispatch = function(marketData) {
     
     const solidityReady = prepForSolidity(marketData)
     console.log(solidityReady)
-    console.log('update', FairOracle.updateMarket)
 
-    FairOracle.updateMarket(
-        solidityReady.assets,
-        solidityReady.bids,
-        solidityReady.asks,
-        solidityReady.lasts,
-        {
-            gas: 3000000
-        }, 
-        function(err, tx) {
-            if (err) console.log(err)
-            console.log('tx', tx)
-        }
-    )
+    FairOracle.deployed().then(function(instance) {
+        instance.updateMarket(
+            solidityReady.assets,
+            solidityReady.bids,
+            solidityReady.asks,
+            solidityReady.lasts,
+            {
+                gas: 3000000
+            }, 
+            function(err, tx) {
+                if (err) console.log(err)
+                console.log('tx', tx)
+            }
+        )
+    })
 }
 
 // Pretty log data to console 
@@ -91,7 +90,9 @@ const feed = function() {
                     base, 
                     exchange
                 ))
-            )
+            ).catch(err => {
+                console.error(`Error getting ticker value for ${currency}`, err)
+            })
 
             // Assign the market data to the appropriot exchange
             tickers.then(values => {
@@ -117,6 +118,8 @@ const feed = function() {
 
         dispatch(chainData)
         // TODO: push chaindata to chain
+    }).catch(err => {
+        console.error('Error getting markets for all coins.', err)
     })
 }
 

@@ -23,7 +23,7 @@
     "bignumber.js": "^4.0.2",
     "bluebird": "^3.5.0",
     "chalk": "^2.0.1",
-    "crypto-normalize": "2.3.6",
+    "crypto-normalize": "^2.3.6",
     "koa": "^2.3.0",
     "koa-route": "^3.2.0",
     "koa-send": "^4.1.0",
@@ -31,7 +31,8 @@
     "redis": "^2.7.1",
     "solc": "^0.4.14",
     "stats-analysis": "^2.0.0",
-    "web3": "0.20.0",
+    "truffle-contract": "^2.0.5",
+    "web3": "^0.20.0",
     "ws": "^3.1.0"
   }
 }
