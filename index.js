@@ -50,7 +50,6 @@ const dispatch = function(marketData) {
     }
     
     const solidityReady = prepForSolidity(marketData)
-    console.log(solidityReady)
 
     FairOracle.deployed().then(function(instance) {
         instance.updateMarket(
@@ -63,9 +62,11 @@ const dispatch = function(marketData) {
                 gas: web3Settings.gasLimit
             }
         ).then(result => {
-            console.log('result', result)
+            console.log(
+                chalk.cyan('\nUpdated on chain oracle contract.\n')
+            )
         }).catch(err => {
-            console.error('err updating market', err)
+            console.error('Error updating market', err)
         })
     })
 }
