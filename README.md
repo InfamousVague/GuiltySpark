@@ -1,4 +1,4 @@
-[GuiltySpark](https://s1.megabrandsmedia.com/figurines/r/444x444/343-guilty-spark-9469.png)
+![GuiltySpark](https://s1.megabrandsmedia.com/figurines/r/444x444/343-guilty-spark-9469.png)
 # GuiltySpark
 
 GuiltySpark is an oracle that can help guide you through the flood outbreak, GuiltySpark is also an oracle that pushes asset prices to the chain.
