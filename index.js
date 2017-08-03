@@ -13,7 +13,8 @@ const {
     redisEnabled,
     floatPercision,
     web3Settings,
-    chainPushInterval
+    chainPushInterval,
+    liteMode
 } = require('./configs/general')
 
 // Setup web3
@@ -26,12 +27,15 @@ console.log(
     chalk.green(`Connected to web3 with provider: ${web3Settings.provider}`)
 )
 
-// Connect to the FairOracle contract
-const FairOracle = contract(
-    require('./build/contracts/FairOracle.json')
-)
-FairOracle.setProvider(provider)
-FairOracle.defaults({
+// Connect to the GuiltySpark contract
+const GuiltySpark = (liteMode) ? contract(
+    require('./build/contracts/GuiltySparkLite.json')
+) : contract(
+    require('./build/contracts/GuiltySpark.json')
+) 
+
+GuiltySpark.setProvider(provider)
+GuiltySpark.defaults({
     from: web3.eth.coinbase
 })
 
@@ -58,12 +62,19 @@ const dispatch = function(marketData) {
     const solidityReady = prepForSolidity(marketData)
     if (Date.now() - lastChainPush > chainPushInterval) {
         lastChainPush = Date.now()
-        FairOracle.deployed().then(function(instance) {
+        let chainInfo = (liteMode) ? [
+            solidityReady.assets,
+            solidityReady.lasts
+        ] : [
+            solidityReady.assets,
+            solidityReady.bids,
+            solidityReady.asks,
+            solidityReady.lasts
+        ]
+
+        GuiltySpark.deployed().then(function(instance) {
             instance.updateMarket(
-                solidityReady.assets,
-                solidityReady.bids,
-                solidityReady.asks,
-                solidityReady.lasts,
+                ...chainInfo,
                 {
                     from: web3.eth.coinbase, 
                     gas: web3Settings.gasLimit

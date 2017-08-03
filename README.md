@@ -1,6 +1,6 @@
-# FairOracle
+# GuiltySpark
 
-Fair oracle is an oracle 
+GuiltySpark is an oracle that can help guide you through the flood outbreak, GuiltySpark is also an oracle that pushes asset prices to the chain.
 
 ## Use It!
 Simply use 
@@ -37,21 +37,25 @@ ws.on('message', function incoming(data) {
 ## On Chain Methods
 
 ### Public
-#### FairOracle.getAsset(bytes8 asset)
+#### GuiltySpark.getAsset(bytes8 asset)
 Returns an asset from the oracle 
 ```
 returns (uint, uint, uint, uint) // bid, ask, last, time
 ```
-#### FairOracle.getAssets(bytes8[] assets)
+#### GuiltySpark.getAssets(bytes8[] assets)
 Returns a list of assets from the oracle
 ```
 returns (bytes8[], uint[], uint[], uint[], uint) // assets, bids, asks, lasts, time
 ```
 
 ### Owner Only
-#### FairOracle.updateMarket(bytes8[] assets, uint[] bids, uint[] asks, uint[] lasts)
+#### GuiltySpark.updateMarket(bytes8[] assets, uint[] bids, uint[] asks, uint[] lasts)
 Update the oracle prices
 
-#### FairOracle.close()
+#### GuiltySpark.close()
 Selfdestruct the oracle contract
 
+
+## Notable things
+
+Fair oracle can be run in `liteMode` to conserve gas by only updating the last market price instead of including `bid` and `ask` as well.

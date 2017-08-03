@@ -52,5 +52,5 @@ app.use(_.get('/v1/datapoints', controllers.datapoints))
 
 app.listen(3008)
 console.log(
-  chalk.green(`FairOracle API is running on localhost:3008\n`)
+  chalk.green(`343 GuiltySpark API is running on localhost:3008\n`)
 )
