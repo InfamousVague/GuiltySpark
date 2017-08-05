@@ -1,5 +1,6 @@
 const fetch = require('node-fetch')
 const normalize = require('crypto-normalize')
+const { base } = require('../../configs/general')
 
 module.exports = function(coin) {
     const symbol = normalize.translate(coin, 'coinmarketcap.com')
@@ -7,10 +8,18 @@ module.exports = function(coin) {
         .then(res => {
             return res.json()
         }).then(json => {
-            return {
-                bid: json[0].price_usd,
-                ask: json[0].price_usd,
-                last: json[0].price_usd
+            if (base != 'USD') {
+                return {
+                    bid: null,
+                    ask: null,
+                    last: null
+                }
+            } else {
+                return {
+                    bid: json[0].price_usd,
+                    ask: json[0].price_usd,
+                    last: json[0].price_usd
+                }
             }
         }).catch(e => {
             return {

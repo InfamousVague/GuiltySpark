@@ -136,8 +136,44 @@
         }
       },
       "updated_at": 1501790549508
+    },
+    "1501791343526": {
+      "links": {},
+      "events": {
+        "0x434b4aa0af87854b192bbf240ad17bddbcd61fe99ae4c4a9cddf55fb4923de5f": {
+          "anonymous": false,
+          "inputs": [],
+          "name": "NewMarketInfo",
+          "type": "event"
+        }
+      },
+      "updated_at": 1501826084266
+    },
+    "1501876935043": {
+      "links": {},
+      "events": {
+        "0x434b4aa0af87854b192bbf240ad17bddbcd61fe99ae4c4a9cddf55fb4923de5f": {
+          "anonymous": false,
+          "inputs": [],
+          "name": "NewMarketInfo",
+          "type": "event"
+        }
+      },
+      "updated_at": 1501878541074
+    },
+    "1501882066437": {
+      "links": {},
+      "events": {
+        "0x434b4aa0af87854b192bbf240ad17bddbcd61fe99ae4c4a9cddf55fb4923de5f": {
+          "anonymous": false,
+          "inputs": [],
+          "name": "NewMarketInfo",
+          "type": "event"
+        }
+      },
+      "updated_at": 1501882232634
     }
   },
   "schema_version": "0.0.5",
-  "updated_at": 1501790549508
+  "updated_at": 1501882232634
 }

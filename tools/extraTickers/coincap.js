@@ -1,16 +1,17 @@
 const fetch = require('node-fetch')
 const normalize = require('crypto-normalize')
+const { base } = require('../../configs/general')
 
 module.exports = function(coin) {
     const symbol = normalize.translate(coin, 'coincap.io')
-    return fetch(`https://api.coinmarketcap.com/v1/ticker/${symbol}`)
+    return fetch(`http://staging.coincap.io/api/v2/?run=convert&from=${symbol}&to=${base}&volume=1`)
         .then(res => {
             return res.json()
         }).then(json => {
             return {
-                bid: json[0].price_usd,
-                ask: json[0].price_usd,
-                last: json[0].price_usd
+                bid: json.data,
+                ask: json.data,
+                last: json.data
             }
         }).catch(e => {
             return {

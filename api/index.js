@@ -4,6 +4,7 @@ const app       = new Koa()
 const send      = require('koa-send')
 const chalk     = require('chalk')
 const WebSocket = require('ws')
+const cors      = require('kcors')
 
 const { 
     exchanges,
@@ -46,6 +47,7 @@ const controllers = {
     }
 }
 
+app.use(cors())
 app.use(_.get('/v1/datapoints', controllers.datapoints))
     .use(_.get('/v1/coins', controllers.coins))
     .use(_.get('/v1/market', controllers.market))

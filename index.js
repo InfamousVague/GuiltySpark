@@ -4,6 +4,10 @@ const Web3      = require('web3')
 const chalk     = require('chalk')
 const contract  = require('truffle-contract')
 
+global.GuiltySparkGlobals = {
+    lastUpdate: 0
+} // Used for logging
+
 const { 
     exchanges,
     feedInterval,
@@ -43,7 +47,6 @@ global.publish = () => { /* noop */ }
 
 if (apiEnabled) require('./api')
 
-let lastChainPush = 0
 const dispatch = function(marketData) {
     logger(marketData)
 
@@ -60,8 +63,8 @@ const dispatch = function(marketData) {
     
     // Get data in arrays ready for piping to chain
     const solidityReady = prepForSolidity(marketData)
-    if (Date.now() - lastChainPush > chainPushInterval) {
-        lastChainPush = Date.now()
+    if (Date.now() - GuiltySparkGlobals.lastUpdate > chainPushInterval) {
+        GuiltySparkGlobals.lastUpdate = Date.now()
         let chainInfo = (liteMode) ? [
             solidityReady.assets,
             solidityReady.lasts
@@ -104,9 +107,13 @@ const prepForSolidity = require('./tools/prepareForSolidity')
 
 // Primary function which kicks off feeding the chain new price data
 const feed = function() {
+    console.log(
+        chalk.magenta(
+            '📈 Aggrigating data from exchanges...'
+        )
+    )
     // Ready promises for fetching market data on all currencies
-    const coins = require('./tools/buildSupportedCoins')
-
+    const coins = require('./tools/buildSupportedCoins')()
     // Finally, get all markets for all coins
     const marketData = Promise.all(coins).then(markets => {
         const chainData = removeOutliersGetMean(
@@ -114,11 +121,10 @@ const feed = function() {
         )
 
         dispatch(chainData)
-        // TODO: push chaindata to chain
+        setTimeout(feed, feedInterval)
     }).catch(err => {
         console.error('Error getting markets for all coins.', err)
     })
 }
 
 feed()
-setInterval(feed, feedInterval)
