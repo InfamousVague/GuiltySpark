@@ -1,3 +1,4 @@
+![GuiltySpark](https://68.media.tumblr.com/fb52df3ad899cb09fe0cf66138a238e9/tumblr_nhs5bn092o1riec8co5_400.gif)
 # GuiltySpark
 
 GuiltySpark is an oracle that can help guide you through the flood outbreak, GuiltySpark is also an oracle that pushes asset prices to the chain.
