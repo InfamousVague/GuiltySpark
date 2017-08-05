@@ -25,7 +25,7 @@
     "bluebird": "^3.5.0",
     "chalk": "^2.0.1",
     "console.table": "^0.8.0",
-    "crypto-normalize": "^2.3.10",
+    "crypto-normalize": "2.3.11",
     "jetty": "^0.2.1",
     "kcors": "^2.2.1",
     "koa": "^2.3.0",

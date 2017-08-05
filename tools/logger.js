@@ -1,5 +1,5 @@
 const chalk = require('chalk')
-const { base, web3Settings } = require('../configs/general')
+const { base, web3Settings, convertTo } = require('../configs/general')
 const { version, author } = require('../package.json')
 const ansi = require('ansi')
 const cursor = ansi(process.stdout)
@@ -39,7 +39,7 @@ module.exports = function(marketData) {
     last  : 60,
     points: 80,
     offset: 4,
-    tiger : 'bgWhite'
+    tiger : 'bgBlack'
   }
 
   cursor.goto(1, 1).write(
@@ -70,8 +70,10 @@ module.exports = function(marketData) {
     chalk.grey(`---------------------------------------------------------------------------------------------`)
   )
 
+    
   Object.keys(marketData).map((coin, i) => {
-    spacing.tiger = (spacing.tiger === 'white') ? 'bgBlack' : 'white'
+    spacing.tiger = (spacing.tiger === 'bgBlack') ? 'white' : 'bgBlack'
+    
     cursor.goto(0, i + spacing.offset).write(
       chalk[spacing.tiger](
         chalk.black(
@@ -114,8 +116,8 @@ module.exports = function(marketData) {
       chalk[spacing.tiger](
         chalk[
           (GuiltySparkGlobals[`${coin}_support`] === 2) ? 
-            'yellow' : (GuiltySparkGlobals[`${coin}_support`] === 1) ? 
-              'red' :  (GuiltySparkGlobals[`${coin}_support`] === 3) ? 
+            'yellow' : (GuiltySparkGlobals[`${coin}_support`] === 1 && base != coin) ? 
+              'red' :  (GuiltySparkGlobals[`${coin}_support`] === 3 && base != coin) ? 
                 'white' : 'green'
         ](
           GuiltySparkGlobals[`${coin}_support`].toString()
@@ -124,21 +126,33 @@ module.exports = function(marketData) {
     )
 
   })
+
   cursor.goto(0, Object.keys(marketData).length + spacing.offset + 1).write(
-    chalk.white(
-      'Base currency USD 💵'
+    chalk.yellow(
+      `Base ${base}`
     )
   )
+
+  if (convertTo) {
+    cursor.goto(20, Object.keys(marketData).length + spacing.offset + 1).write(
+      chalk.cyan(
+        `Converted To ${convertTo}`
+      )
+    )
+  }
+
   cursor.goto(0, Object.keys(marketData).length + spacing.offset + 3).write(
     chalk.green(
       'GuiltySpark API listening on http://localhost:3008/v1/'
     )
   )
+  
   cursor.goto(0, Object.keys(marketData).length + spacing.offset + 4).write(
     chalk.green(
       `Connected to web3 provider ${web3Settings.provider}`
     )
   )
+
   cursor.goto(0, Object.keys(marketData).length + spacing.offset + 5).write(
     chalk.grey(
       `Version ${version} by ${author}\n`

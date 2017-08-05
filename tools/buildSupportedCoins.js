@@ -51,11 +51,11 @@ module.exports = function() {
                     } else if (i === 1) {
                         if (validData(value)) {
                             support++
-                            markets['coincap.com'] = value
+                            markets['coincap.io'] = value
                         }
                     } else if (validData(value)) {
                         support++
-                        markets[exchanges[i - 1]] = value
+                        markets[exchanges[i - 2]] = value
                     } else {
                         // console.warn('Removed non functioning datapoint.')
                     }
@@ -64,7 +64,7 @@ module.exports = function() {
                 GuiltySparkGlobals[`${currency}_support`] = support
                 
                 // Don't push to chain with only one data point, that would open outlier issues
-                if (support <= minimumDataPoints) {
+                if (support <= minimumDataPoints && currency != base) {
                     console.log(
                         chalk.red(`${currency} does not have enough datapoints! Not updating on chain prices!`)
                     )

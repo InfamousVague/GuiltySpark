@@ -105,6 +105,9 @@ const format = require('./tools/format')
 // This prepares all the data into the format the solidity contract expects
 const prepForSolidity = require('./tools/prepareForSolidity')
 
+// Converts prices to another currency
+const convertTo = require('./tools/convertTo')
+
 // Primary function which kicks off feeding the chain new price data
 const feed = function() {
     console.log(
@@ -120,7 +123,10 @@ const feed = function() {
             format(markets)
         )
 
-        dispatch(chainData)
+        dispatch(
+            (convertTo) ? convertTo(chainData) : chainData
+        )
+
         setTimeout(feed, feedInterval)
     }).catch(err => {
         console.error('Error getting markets for all coins.', err)

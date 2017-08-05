@@ -2,7 +2,8 @@ module.exports = {
     exchanges: [
         'kraken.com',
         'poloniex.com',
-        'bittrex.com'
+        'bittrex.com',
+        'shapeshift.io'
     ],
     supportedCurrencies: [
         'ETH',
@@ -11,6 +12,23 @@ module.exports = {
         'XMR',
         'BTC',
         'ZEC',
+        'FCT',
+        'DCR',
+        //'AMP',
+        //'NAV',
+        //'BURST',
+        'VTC',
+        //'RADS',
+        'DGB',
+        'GNT',
+        'DGD',
+        'BTS',
+        'LSK',
+        'PPC',
+        'DOGE',
+        'WAVES',
+        'MAID',
+        'STEEM',
         'DASH',
         'XRP',
         'GNO',
@@ -28,7 +46,8 @@ module.exports = {
         'OMG'
     ],
     feedInterval: 15000, // How often to update prices (not chain prices), websockets, etc.
-    base: 'USD',
+    base: 'BTC',
+    convertTo: 'ETH',
     apiEnabled: true,
     redisEnabled: false,
     web3Settings: {
