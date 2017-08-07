@@ -72,7 +72,7 @@ module.exports = function(marketData) {
 
     
   Object.keys(marketData).map((coin, i) => {
-    spacing.tiger = (spacing.tiger === 'bgBlack') ? 'white' : 'bgBlack'
+    spacing.tiger = (GuiltySparkGlobals.disabledAssets.includes(coin)) ? 'bgRed' : (spacing.tiger === 'bgBlack') ? 'white' : 'bgBlack'
     
     cursor.goto(0, i + spacing.offset).write(
       chalk[spacing.tiger](

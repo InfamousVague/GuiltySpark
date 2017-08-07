@@ -7,22 +7,24 @@ module.exports = function(marketData) {
     const lasts     = []
 
     Object.keys(marketData).map(coin => {
-        assets.push(coin)
-        bids.push(
-          Math.floor(
-            marketData[coin].bid * floatPercision
-          )
-        )
-        asks.push(
-          Math.floor(
-            marketData[coin].ask * floatPercision
-          )
-        )
-        lasts.push(
-          Math.floor(
-            marketData[coin].last * floatPercision
-          )
-        )  
+        if (!GuiltySparkGlobals.disabledAssets.includes(coin)) {
+            assets.push(coin)
+            bids.push(
+              Math.floor(
+                marketData[coin].bid * floatPercision
+              )
+            )
+            asks.push(
+              Math.floor(
+                marketData[coin].ask * floatPercision
+              )
+            )
+            lasts.push(
+              Math.floor(
+                marketData[coin].last * floatPercision
+              )
+            )  
+        }
     })
 
     return {

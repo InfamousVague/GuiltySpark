@@ -5,7 +5,8 @@ const chalk     = require('chalk')
 const contract  = require('truffle-contract')
 
 global.GuiltySparkGlobals = {
-    lastUpdate: 0
+    lastUpdate: 0,
+    disabledAssets: []
 } // Used for logging
 
 const { 

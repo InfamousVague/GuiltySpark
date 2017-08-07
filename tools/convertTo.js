@@ -8,7 +8,6 @@ const convert = function(price, to) {
 }
 
 module.exports = function(markets) {
-    console.log('markets', markets)
     const market = {}
 
     Object.keys(markets).map(coin => {

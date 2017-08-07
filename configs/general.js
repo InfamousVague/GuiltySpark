@@ -3,22 +3,29 @@ module.exports = {
         'kraken.com',
         'poloniex.com',
         'bittrex.com',
-        'shapeshift.io'
+        'bitfinex.com',
+        'shapeshift.io',
+        'chbtc.com',
+        'liqui.io',
+        'hitbtc.com'
     ],
     supportedCurrencies: [
+        'BTC',
         'ETH',
+        'BCH',
+        'NXT',
         'ETC',
         'LTC',
         'XMR',
-        'BTC',
+        'NMR',
         'ZEC',
         'FCT',
         'DCR',
-        //'AMP',
-        //'NAV',
-        //'BURST',
+        'AMP',
+        'NAV',
+        'BURST',
         'VTC',
-        //'RADS',
+        'RADS',
         'DGB',
         'GNT',
         'DGD',
@@ -28,26 +35,37 @@ module.exports = {
         'DOGE',
         'WAVES',
         'MAID',
+        'ARDR',
         'STEEM',
         'DASH',
         'XRP',
         'GNO',
+        'TRST',
         'ZEC',
         'SC',
         'POT',
+        'SNGLS',
         'CLAM',
+        'GUP',
+        'BNT',
         'LBC',
         'NMC',
         'DGB',
         'MLN',
+        'GRC',
         'ICN',
         'REP',
         'EOS',
-        'OMG'
+        'OMG',
+        '1ST',
+        'ANT',
+        'XEM',
+        'LSK',
+
     ],
     feedInterval: 15000, // How often to update prices (not chain prices), websockets, etc.
     base: 'BTC',
-    convertTo: 'ETH',
+    convertTo: 'ETH', // Can be set to false
     apiEnabled: true,
     redisEnabled: false,
     web3Settings: {
@@ -55,6 +73,7 @@ module.exports = {
         testRPC: true,
         gasLimit: 2000000
     },
+    priceDiffBuffer: 5, // 10 Percent
     minimumDataPoints: 1, // Anything lower will stop updating on chain prices
     liteMode: true, // Only pushes last prices to chain
     floatPercision: 1000000, // Solidity hates floats, this should be noted for anyone using the oracle
