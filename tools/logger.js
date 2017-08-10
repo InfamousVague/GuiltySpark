@@ -34,6 +34,7 @@ let lastMarketData = false
 
 const logger = function(marketData) {
   lastMarketData = marketData
+
   cursor.write('\033c')
   cursor.reset()
   cursor.beep()
@@ -73,17 +74,17 @@ const logger = function(marketData) {
   )
 
   cursor.goto(0, 3).write(
-    chalk.grey(`---------------------------------------------------------------------------------------------`)
+    chalk.grey(`-`.repeat(95))
   )
 
     
   Object.keys(marketData).slice(toRender[0], toRender[1]).map((coin, i) => {
-    spacing.tiger = (GuiltySparkGlobals.disabledAssets.includes(coin)) ? 'bgRed' : (spacing.tiger === 'bgBlack') ? 'white' : 'bgBlack'
+    spacing.tiger = (global.GuiltySparkGlobals.disabledAssets.includes(coin)) ? 'bgRed' : (spacing.tiger === 'bgBlack') ? 'white' : 'bgBlack'
     
     cursor.goto(0, i + spacing.offset).write(
       chalk[spacing.tiger](
         chalk.black(
-          '                                                                                             '
+          ' '.repeat(95)
         )
       )
     )
@@ -121,12 +122,12 @@ const logger = function(marketData) {
     cursor.goto(spacing.points, i + spacing.offset).write(
       chalk[spacing.tiger](
         chalk[
-          (GuiltySparkGlobals[`${coin}_support`] === 2) ? 
-            'yellow' : (GuiltySparkGlobals[`${coin}_support`] === 1 && base != coin) ? 
-              'red' :  (GuiltySparkGlobals[`${coin}_support`] === 3 && base != coin) ? 
+          (global.GuiltySparkGlobals[`${coin}_support`] === 2) ? 
+            'yellow' : (global.GuiltySparkGlobals[`${coin}_support`] === 1 && base != coin) ? 
+              'red' :  (global.GuiltySparkGlobals[`${coin}_support`] === 3 && base != coin) ? 
                 'white' : 'green'
         ](
-          GuiltySparkGlobals[`${coin}_support`].toString()
+          global.GuiltySparkGlobals[`${coin}_support`].toString()
         )
       )
     )

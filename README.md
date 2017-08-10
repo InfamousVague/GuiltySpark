@@ -3,6 +3,13 @@
 
 GuiltySpark is an oracle that can help guide you through the flood outbreak, GuiltySpark is also an oracle that pushes asset prices to the chain.
 
+## Contributing
+
+[![js-standard-style](https://cdn.rawgit.com/feross/standard/master/badge.svg)](http://standardjs.com)
+
+We use JS Standard, please install eslint and correct ESLint errors where reasonable. 
+
+
 ## Use It!
 Simply use 
 ```
