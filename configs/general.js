@@ -7,13 +7,32 @@ module.exports = {
         'shapeshift.io',
         'chbtc.com',
         'liqui.io',
-        'hitbtc.com'
+        'hitbtc.com',
+        'gdax.com',
+        'okcoin.com'
     ],
     supportedCurrencies: [
         'BTC',
         'ETH',
         'BCH',
         'NXT',
+        'NXC',
+        'EXP',
+        //'XBC',
+        'NOTE',
+        'XCP',
+        'OMNI',
+        'XPM',
+        'NAUT',
+        'STRAT',
+        'BCY',
+        'BCN',
+        'SJCX',
+        'GAME',
+        'BTCD',
+        'XLM',
+        'BLK',
+        'SYS',
         'ETC',
         'LTC',
         'XMR',
@@ -60,8 +79,12 @@ module.exports = {
         '1ST',
         'ANT',
         'XEM',
-        'LSK',
-
+        'LSK'
+    ].sort(),
+    // Whitelisted coins will push to chain regaurdless of if there is enough datapoints
+    // This is not reccomended but nessiary if we're supporting coins that are only offered on one exchange.
+    whitelist: [
+        //'XPM'
     ],
     feedInterval: 15000, // How often to update prices (not chain prices), websockets, etc.
     base: 'BTC',
@@ -73,6 +96,7 @@ module.exports = {
         testRPC: true,
         gasLimit: 2000000
     },
+    assetsPerPage: 10,
     priceDiffBuffer: 5, // 10 Percent
     minimumDataPoints: 1, // Anything lower will stop updating on chain prices
     liteMode: true, // Only pushes last prices to chain

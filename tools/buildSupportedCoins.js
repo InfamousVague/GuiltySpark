@@ -63,13 +63,6 @@ module.exports = function() {
 
                 GuiltySparkGlobals[`${currency}_support`] = support
                 
-                // Don't push to chain with only one data point, that would open outlier issues
-                if (support <= minimumDataPoints && currency != base) {
-                    console.log(
-                        chalk.red(`${currency} does not have enough datapoints! Not updating on chain prices!`)
-                    )
-                }
-
                 // Resolve a list of market values for givin currency
                 resolve({
                     [currency]: markets

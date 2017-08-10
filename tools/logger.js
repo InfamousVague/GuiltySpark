@@ -1,33 +1,39 @@
+// This code is super ugly but makes for really nice ways to interact with the oracle
+
 const chalk = require('chalk')
-const { base, web3Settings, convertTo } = require('../configs/general')
+const { 
+  base, 
+  web3Settings, 
+  convertTo, 
+  whitelist,
+  assetsPerPage,
+  supportedCurrencies
+} = require('../configs/general')
+
 const { version, author } = require('../package.json')
 const ansi = require('ansi')
 const cursor = ansi(process.stdout)
 const jetty = require('jetty')
+const keypress = require('keypress')
+keypress(process.stdin)
 
-console.log(chalk.cyan(`
-   ▄██████▄  ███    █▄   ▄█   ▄█           ███     ▄██   ▄      
-  ███    ███ ███    ███ ███  ███       ▀█████████▄ ███   ██▄    
-  ███    █▀  ███    ███ ███▌ ███          ▀███▀▀██ ███▄▄▄███    
- ▄███        ███    ███ ███▌ ███           ███   ▀ ▀▀▀▀▀▀███    
-▀▀███ ████▄  ███    ███ ███▌ ███           ███     ▄██   ███    
-  ███    ███ ███    ███ ███  ███           ███     ███   ███    
-  ███    ███ ███    ███ ███  ███▌    ▄     ███     ███   ███    
-  ████████▀  ████████▀  █▀   █████▄▄██    ▄████▀    ▀█████▀     
-   ▄████████    ▄███████▄    ▄████████    ▄████████    ▄█   ▄█▄ 
-  ███    ███   ███    ███   ███    ███   ███    ███   ███ ▄███▀ 
-  ███    █▀    ███    ███   ███    ███   ███    ███   ███▐██▀   
-  ███          ███    ███   ███    ███  ▄███▄▄▄▄██▀  ▄█████▀    
-▀███████████ ▀█████████▀  ▀███████████ ▀▀███▀▀▀▀▀   ▀▀█████▄    
-         ███   ███          ███    ███ ▀███████████   ███▐██▄   
-   ▄█    ███   ███          ███    ███   ███    ███   ███ ▀███▄ 
- ▄████████▀   ▄████▀        ███    █▀    ███    ███   ███   ▀█▀ 
-                                         ███    ███   ▀        
-                                         
-  Version ${version} by ${author}
-   `))
+process.stdin.on('keypress', function (ch, key) {
+ if (key && key.ctrl && key.name == 'c') {
+  process.exit()
+ }
+})
+let bound = false
+let page = 1
+let toRender = [
+  0,
+  10
+]
+let marketCount = 0
+let pages = Math.ceil(supportedCurrencies.length / assetsPerPage) - 1
+let lastMarketData = false
 
-module.exports = function(marketData) {
+const logger = function(marketData) {
+  lastMarketData = marketData
   cursor.write('\033c')
   cursor.reset()
   cursor.beep()
@@ -71,7 +77,7 @@ module.exports = function(marketData) {
   )
 
     
-  Object.keys(marketData).map((coin, i) => {
+  Object.keys(marketData).slice(toRender[0], toRender[1]).map((coin, i) => {
     spacing.tiger = (GuiltySparkGlobals.disabledAssets.includes(coin)) ? 'bgRed' : (spacing.tiger === 'bgBlack') ? 'white' : 'bgBlack'
     
     cursor.goto(0, i + spacing.offset).write(
@@ -84,7 +90,7 @@ module.exports = function(marketData) {
 
     cursor.goto(spacing.asset, i + spacing.offset).write(
       chalk[spacing.tiger](
-        coin
+        `${coin}${(whitelist.includes(coin)) ? '*whitelisted' : ''}`
       )
     )
 
@@ -127,35 +133,43 @@ module.exports = function(marketData) {
 
   })
 
-  cursor.goto(0, Object.keys(marketData).length + spacing.offset + 1).write(
+  cursor.goto(0, assetsPerPage + spacing.offset).write(
+    chalk.yellow(
+      `Page ${page}/${pages}`
+    )
+  )
+
+  cursor.goto(0, assetsPerPage + spacing.offset + 1).write(
     chalk.yellow(
       `Base ${base}`
     )
   )
 
   if (convertTo) {
-    cursor.goto(20, Object.keys(marketData).length + spacing.offset + 1).write(
+    cursor.goto(20, assetsPerPage + spacing.offset + 1).write(
       chalk.cyan(
         `Converted To ${convertTo}`
       )
     )
   }
-
-  cursor.goto(0, Object.keys(marketData).length + spacing.offset + 3).write(
-    chalk.green(
-      'GuiltySpark API listening on http://localhost:3008/v1/'
-    )
-  )
-  
-  cursor.goto(0, Object.keys(marketData).length + spacing.offset + 4).write(
-    chalk.green(
-      `Connected to web3 provider ${web3Settings.provider}`
-    )
-  )
-
-  cursor.goto(0, Object.keys(marketData).length + spacing.offset + 5).write(
-    chalk.grey(
-      `Version ${version} by ${author}\n`
-    )
-  )
 }
+
+process.stdin.on('keypress', function (ch, key) {
+  if (key && key.name == 'o') {
+    if (page > 1) page--
+  } else if (key && key.name == 'p') {
+    if (page < pages) page++
+  }
+
+  toRender = [
+    (page === 1) ? 0 : page * assetsPerPage,
+    ((page === 1) ? 0 : page * assetsPerPage) + assetsPerPage
+  ]
+
+  if (lastMarketData) logger(lastMarketData)
+})
+process.stdin.setRawMode(true)
+process.stdin.resume()
+
+
+module.exports = logger

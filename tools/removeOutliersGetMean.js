@@ -1,6 +1,10 @@
 const _ = require('lodash')
 const stats = require('stats-analysis')
-const { priceDiffBuffer, base } = require('../configs/general')
+const { 
+  priceDiffBuffer, 
+  base, 
+  whitelist 
+} = require('../configs/general')
 
 module.exports = function(coins) {
     const cleansedOfOutliers = {}
@@ -15,7 +19,11 @@ module.exports = function(coins) {
       if (cleansedOfOutliers[coin].last.length === 2) {
         const percent = (cleansedOfOutliers[coin].last[0] * 100) / cleansedOfOutliers[coin].last[1]
         if (percent > 100 + priceDiffBuffer || percent < 100 - priceDiffBuffer) {
-          if (!GuiltySparkGlobals.disabledAssets.includes(coin)) {
+          if (
+            !GuiltySparkGlobals.disabledAssets.includes(coin) &&
+            coin != base &&
+            !whitelist.includes(coin)
+          ) {
             GuiltySparkGlobals.disabledAssets.push(coin)
           }
         } else {
@@ -23,12 +31,16 @@ module.exports = function(coins) {
             GuiltySparkGlobals.disabledAssets = GuiltySparkGlobals.disabledAssets.filter(e => e !== coin)
           }
         }
-      } else if (GuiltySparkGlobals.disabledAssets.includes(coin)){
-        GuiltySparkGlobals.disabledAssets = GuiltySparkGlobals.disabledAssets.filter(e => e !== coin)
       } else if (cleansedOfOutliers[coin].last.length === 1 || !cleansedOfOutliers[coin].last.length) {
-        if (!GuiltySparkGlobals.disabledAssets.includes(coin) && coin != base) {
+        if (
+          !GuiltySparkGlobals.disabledAssets.includes(coin) &&
+          coin != base &&
+          !whitelist.includes(coin)
+        ) {
           GuiltySparkGlobals.disabledAssets.push(coin)
         }
+      } else if (GuiltySparkGlobals.disabledAssets.includes(coin)){
+        GuiltySparkGlobals.disabledAssets = GuiltySparkGlobals.disabledAssets.filter(e => e !== coin)
       }
 
       cleansedOfOutliers[coin] = {

@@ -44,17 +44,16 @@ contract GuiltySparkLite {
   }
 
   // Get a list of assets
-  function getAssets(bytes8[] assets) constant returns (bytes8[], uint16[], uint64) { //  lasts, time
+  function getAssets(bytes8[] assets) constant returns (bytes8[], uint16[], uint64[]) { // asset, lasts, times
     uint16[] memory lasts;
-    uint64 time;
+    uint64[] memory times;
 
     for (uint i = 0; i < assets.length; i++) {
       lasts[i] = uint16(ticker[assets[i]].last);
-      // All assets are updated at the same time currently so an array is un-nessisary
-      time = uint64(ticker[assets[i]].time);
+      times[i] = uint64(ticker[assets[i]].time);
     }
 
-    return (assets, lasts, time);
+    return (assets, lasts, times);
   }
 
   // Close the contract
